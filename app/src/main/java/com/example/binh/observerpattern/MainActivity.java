@@ -13,7 +13,9 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements FirstFragment.FragmentImplementingListener {
+
+    private ThirdFragment thirdFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,14 +24,17 @@ public class MainActivity extends AppCompatActivity {
         ViewPager vp = findViewById(R.id.view_pager);
 
         FirstFragment firstFragment = new FirstFragment();
-        SecondFragment secondFragment = new SecondFragment();
-        ThirdFragment thirdFragment = new ThirdFragment();
+        thirdFragment = new ThirdFragment();
 
         thirdFragment.register(firstFragment);
-        thirdFragment.register(secondFragment);
         MyPagerAdapter adapter = new MyPagerAdapter(getSupportFragmentManager(),
-                new Fragment[] {firstFragment, secondFragment, thirdFragment});
+                new Fragment[] {firstFragment, thirdFragment});
         vp.setAdapter(adapter);
+    }
+
+    @Override
+    public void onFinish(Observer observer) {
+        thirdFragment.register(observer);
     }
 
     private class MyPagerAdapter extends FragmentPagerAdapter {
